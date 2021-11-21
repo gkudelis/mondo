@@ -7,10 +7,10 @@
 
 (fn mon-do-helper [bindings body]
   (match bindings
-    [name value & rest] `(: ,value :bind (fn [,name] ,(mon-do-helper rest body)))
+    [name value & rest] `(,bind ,value (fn [,name] ,(mon-do-helper rest body)))
     [] (resolve-wrap body)))
 
-(fn mon-do [bindings body]
+(fn mon-do [monad bindings body]
   `(let [,bind (. ,monad :bind)
          ,wrap (. ,monad :wrap)]
      ,(mon-do-helper bindings body)))
