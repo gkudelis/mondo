@@ -1,0 +1,3 @@
+[submodule "kindness"]
+	path = kindness
+	url = git@github.com:gkudelis/kindness.git
