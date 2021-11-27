@@ -2,8 +2,6 @@
 
 (local list (kind :list))
 
-(fn list.wrap [v] [v])
-
 (fn list.bind [vs f]
   (local result [])
   (each [_ v (ipairs vs)]
@@ -11,19 +9,42 @@
       (table.insert result u)))
   result)
 
+(fn list.wrap [v] [v])
+
 (local maybe (kind :maybe))
 
-(fn maybe.just [v]
-  {:just true
-   :value v})
+(maybe:constructor
+  :some
+  (fn [v] {:some v}))
 
-(fn maybe.none []
-  {:just false})
+(maybe:constructor
+  :none
+  (fn [] {:none true}))
 
-(fn maybe.wrap [v] (maybe.just v))
+(fn maybe.wrap [v] (maybe.some v))
 
 (fn maybe.bind [v f]
-  (if v.just (f v.value) v))
+  (match v
+    {:some u} (f u)
+    {:none _} v))
+
+(local result (kind :result))
+
+(result:constructor
+  :ok
+  (fn [v] {:ok v}))
+
+(result:constructor
+  :error
+  (fn [e] {:error e}))
+
+(fn result.bind [v f]
+  (match v
+    {:ok u} (f u)
+    {:error _} v))
+
+(fn result.wrap [v] (result.ok v))
 
 {: list
- : maybe}
+ : maybe
+ : result}
