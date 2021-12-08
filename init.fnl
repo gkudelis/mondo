@@ -28,6 +28,17 @@
     {:some u} (f u)
     {:none _} v))
 
+; (fn maybe.bind [v f]
+;   (v:vary
+;     :polar (fn [p] (do stuff p.angle p.length))))
+
+; (maybe:variants
+;   :some (fn [v] v)
+;   :none (fn [] true))
+
+; however, the above assumes a lot of details about how things are stored
+; maybe mapping directly with constructor arguments is a bit more sane
+
 (local result (kind :result))
 
 (result:constructor
